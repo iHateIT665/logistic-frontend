@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/master-layout}">
+<head>
+    <title>Điều Phối Đơn Hàng - Manager</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container-fluid">
+        <div class="row">
+            
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse py-3 border-end" style="min-height: 80vh;">
+                <div class="position-sticky pt-3">
+                    <h6 class="sidebar-heading px-3 mt-4 mb-1 text-muted text-uppercase">
+                        <span>Điều hành</span>
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/manager/dashboard">
+                                <i class="fas fa-chart-line me-2"></i> Tổng quan
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/manager/requests">
+                                <i class="fas fa-clipboard-list me-2"></i> Xử lý Yêu cầu
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active fw-bold text-primary" href="/manager/orders">
+                                <i class="fas fa-truck-loading me-2"></i> Lên đơn hàng
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+                
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Danh sách đơn hàng (Orders)</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <button class="btn btn-sm btn-outline-secondary">
+                            <i class="fas fa-filter me-1"></i> Bộ lọc
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card shadow mb-4">
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="ps-4">Mã đơn</th>
+                                        <th>Khách hàng</th>
+                                        <th>Tổng hàng hóa</th>
+                                        <th>Tiến độ điều phối</th>
+                                        <th>Trạng thái</th>
+                                        <th class="text-end pe-4">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="text-muted">
+                                        <td class="ps-4 fw-bold">--</td>
+                                        <td>
+                                            <div class="fw-bold">--</div>
+                                            <div class="small">--</div>
+                                        </td>
+                                        <td>--</td>
+                                        <td style="width: 200px;">
+                                            <div class="progress" style="height: 6px;">
+                                                <div class="progress-bar bg-secondary" style="width: 0%"></div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-light text-dark border">Chưa có dữ liệu</span></td>
+                                        <td class="text-end pe-4">
+                                            <button class="btn btn-sm btn-primary disabled">
+                                                <i class="fas fa-network-wired me-1"></i> Điều phối
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <div class="modal fade" id="splitOrderModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold">
+                        <i class="fas fa-boxes me-2"></i>Điều Phối Đơn Hàng
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body bg-light">
+                    <form id="splitOrderForm" method="post" action="/manager/orders/split">
+                        
+                        <input type="hidden" name="orderId" id="hiddenOrderId">
+
+                        <div class="card mb-3 border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="row text-center">
+                                    <div class="col-md-4 border-end">
+                                        <small class="text-muted fw-bold">MÃ ĐƠN</small>
+                                        <h5 class="fw-bold text-primary mb-0" id="displayOrderCode">--</h5>
+                                    </div>
+                                    <div class="col-md-4 border-end">
+                                        <small class="text-muted fw-bold">TỔNG SỐ LƯỢNG</small>
+                                        <h5 class="fw-bold text-primary mb-0" id="displayTotalQty">--</h5>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <small class="text-muted fw-bold">ĐÃ ĐIỀU PHỐI</small>
+                                        <h5 class="fw-bold text-success mb-0" id="displayAssignedQty">--</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h6 class="fw-bold text-dark mb-3">Phân chia chuyến xe (Shipment Details)</h6>
+                        
+                        <div id="shipmentContainer">
+                            </div>
+
+                        <button type="button" class="btn btn-outline-primary w-100 border-dashed py-3 fw-bold mt-2" onclick="addShipmentRow()">
+                            <i class="fas fa-plus-circle me-1"></i> THÊM CHUYẾN XE MỚI
+                        </button>
+
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" form="splitOrderForm" class="btn btn-primary fw-bold px-4">
+                        <i class="fas fa-save me-1"></i> Lưu Lệnh Điều Phối
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <template id="shipmentRowTemplate">
+        <div class="card mb-3 shadow-sm border-start border-primary border-4 shipment-row">
+            <div class="card-body py-3">
+                <div class="row g-2 align-items-end">
+                    <div class="col-md-1 text-center">
+                        <span class="badge bg-primary rounded-pill mb-1">Chuyến <span class="row-index">1</span></span>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label class="form-label small fw-bold">Chọn Xe</label>
+                        <select name="vehicleIds" class="form-select form-select-sm">
+                            <option value="">-- Chọn xe --</option>
+                            </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label small fw-bold">Tài xế</label>
+                        <select name="driverIds" class="form-select form-select-sm">
+                            <option value="">-- Chọn tài xế --</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label small fw-bold">Khối lượng</label>
+                        <input type="number" name="quantities" class="form-control form-control-sm" placeholder="Nhập số...">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label small fw-bold">Xuất phát</label>
+                        <input type="datetime-local" name="startTimes" class="form-control form-control-sm">
+                    </div>
+
+                    <div class="col-md-1 text-end">
+                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="this.closest('.shipment-row').remove()">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+</div>
+
+<script layout:fragment="js">
+    // Hàm mở Modal và reset form (Dữ liệu sẽ được JS gán vào khi bấm nút Edit ở bảng trên)
+    function openSplitModal(orderId, orderCode, totalQty) {
+        document.getElementById('hiddenOrderId').value = orderId;
+        document.getElementById('displayOrderCode').innerText = orderCode || '--';
+        document.getElementById('displayTotalQty').innerText = totalQty || '--';
+        document.getElementById('displayAssignedQty').innerText = '0'; // Mặc định reset về 0
+        
+        document.getElementById('shipmentContainer').innerHTML = ''; // Xóa các dòng cũ
+        addShipmentRow(); // Thêm sẵn 1 dòng trắng
+        
+        var myModal = new bootstrap.Modal(document.getElementById('splitOrderModal'));
+        myModal.show();
+    }
+
+    // Hàm UI: Copy template ra thành dòng mới
+    function addShipmentRow() {
+        const container = document.getElementById('shipmentContainer');
+        const template = document.getElementById('shipmentRowTemplate');
+        const clone = template.content.cloneNode(true);
+        
+        // Cập nhật số thứ tự chuyến (chỉ để hiển thị cho đẹp)
+        const index = container.children.length + 1;
+        clone.querySelector('.row-index').innerText = index;
+        
+        container.appendChild(clone);
+    }
+</script>
+
+<style layout:fragment="css">
+    .border-dashed {
+        border-style: dashed !important;
+    }
+</style>
+
+</body>
+</html>

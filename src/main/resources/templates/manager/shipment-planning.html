@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/master-layout}">
+<head>
+    <title>Lập Kế Hoạch Vận Chuyển - Manager</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container-fluid">
+        <div class="row">
+            
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse py-3 border-end" style="min-height: 80vh;">
+                <div class="position-sticky pt-3">
+                    <h6 class="sidebar-heading px-3 mt-4 mb-1 text-muted text-uppercase">
+                        <span>Điều hành</span>
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/manager/dashboard">
+                                <i class="fas fa-chart-line me-2"></i> Tổng quan
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/manager/requests">
+                                <i class="fas fa-clipboard-list me-2"></i> Xử lý Yêu cầu
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/manager/orders">
+                                <i class="fas fa-truck-loading me-2"></i> Lên đơn hàng
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active fw-bold text-primary" href="/manager/planning">
+                                <i class="fas fa-th-large me-2"></i> Xếp hàng lên xe
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+                
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Kế hoạch vận chuyển (Xếp xe)</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Hôm nay</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Ngày mai</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row h-100">
+                    
+                    <div class="col-lg-7 border-end">
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                                <h6 class="m-0 fw-bold text-primary"><i class="fas fa-boxes me-2"></i>Kho hàng chờ xếp (Unassigned)</h6>
+                                <span class="badge bg-secondary">-- kiện</span>
+                            </div>
+                            
+                            <div class="bg-light p-2 border-bottom d-flex gap-2">
+                                <select class="form-select form-select-sm" style="max-width: 200px;">
+                                    <option value="">-- Chọn xe đích --</option>
+                                    <option value="truck1">Xe 29C-123.45</option>
+                                    <option value="truck2">Xe 51D-999.88</option>
+                                    <option value="warehouse">Chuyển về Kho Lưu Trữ</option>
+                                </select>
+                                <button class="btn btn-sm btn-primary fw-bold">
+                                    <i class="fas fa-arrow-right me-1"></i> Xếp hàng
+                                </button>
+                            </div>
+
+                            <div class="card-body p-0">
+                                <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+                                    <table class="table table-hover table-sm mb-0 align-middle">
+                                        <thead class="bg-light sticky-top">
+                                            <tr>
+                                                <th class="text-center" style="width: 40px;"><input type="checkbox" class="form-check-input"></th>
+                                                <th>Mã kiện</th>
+                                                <th>Hàng hóa</th>
+                                                <th>KL / Thể tích</th>
+                                                <th>Điểm đến</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-center"><input type="checkbox" class="form-check-input"></td>
+                                                <td><span class="badge bg-light text-dark border">#DT-001</span></td>
+                                                <td>
+                                                    <div class="fw-bold">Bia Sài Gòn</div>
+                                                    <small class="text-muted">Đơn #ORD-055</small>
+                                                </td>
+                                                <td>
+                                                    <div class="small fw-bold">500 kg</div>
+                                                    <div class="small text-muted">2 m³</div>
+                                                </td>
+                                                <td><small>Kho Long Bình</small></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center"><input type="checkbox" class="form-check-input"></td>
+                                                <td><span class="badge bg-light text-dark border">#DT-002</span></td>
+                                                <td>
+                                                    <div class="fw-bold">Thép cuộn</div>
+                                                    <small class="text-muted">Đơn #ORD-056</small>
+                                                </td>
+                                                <td>
+                                                    <div class="small fw-bold">2,000 kg</div>
+                                                    <div class="small text-muted">0.5 m³</div>
+                                                </td>
+                                                <td><small>Cảng Hải Phòng</small></td>
+                                            </tr>
+                                            <tr class="text-muted fst-italic text-center">
+                                                <td colspan="5" class="py-3">-- Hết hàng chờ --</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <h6 class="fw-bold text-dark mb-3"><i class="fas fa-truck-moving me-2"></i>Các chuyến xe đang lập</h6>
+                        
+                        <div class="card shadow-sm mb-3 border-start border-primary border-4">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <div>
+                                        <h6 class="fw-bold mb-0">29C-123.45 <span class="badge bg-primary ms-1">Xe 5 Tấn</span></h6>
+                                        <small class="text-muted">Tài xế: Nguyễn Văn A</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="badge bg-warning text-dark">Đang xếp</span>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between small mt-2">
+                                    <span>Tải trọng (kg)</span>
+                                    <span class="fw-bold">2,500 / 5,000 kg (50%)</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 8px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 50%"></div>
+                                </div>
+
+                                <div class="d-flex justify-content-between small mt-2">
+                                    <span>Thể tích (m³)</span>
+                                    <span class="fw-bold text-danger">9 / 10 m³ (90%)</span>
+                                </div>
+                                <div class="progress mb-3" style="height: 8px;">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 90%"></div>
+                                </div>
+                                
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <button class="btn btn-sm btn-outline-primary">Xem chi tiết</button>
+                                    <button class="btn btn-sm btn-success"><i class="fas fa-paper-plane me-1"></i> Xuất bến</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm mb-3 border-start border-secondary border-4">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <div>
+                                        <h6 class="fw-bold mb-0">51D-999.88 <span class="badge bg-secondary ms-1">Container 40ft</span></h6>
+                                        <small class="text-muted">Tài xế: -- Chưa gán --</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="badge bg-light text-dark border">Xe trống</span>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between small mt-2">
+                                    <span>Tải trọng</span>
+                                    <span class="fw-bold">0 / 28,000 kg</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 8px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between small mt-2">
+                                    <span>Thể tích</span>
+                                    <span class="fw-bold">0 / 67 m³</span>
+                                </div>
+                                <div class="progress mb-3" style="height: 8px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm mb-3 border-start border-warning border-4 bg-light">
+                            <div class="card-body py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-white p-2 rounded-circle me-3 shadow-sm">
+                                        <i class="fas fa-warehouse text-warning fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0">Kho Lưu Trữ Tạm</h6>
+                                        <small class="text-muted">Chuyển hàng vào đây nếu chưa có xe phù hợp</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
