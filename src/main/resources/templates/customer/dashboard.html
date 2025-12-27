@@ -1,113 +1,71 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" 
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/master-layout}">
-<head>
+      layout:decorate="~{customer/layout-customer}"> <head>
     <title>Dashboard - Khách Hàng</title>
 </head>
 <body>
 
 <div layout:fragment="content">
-    <div class="container-fluid">
-        <div class="row">
-            
-            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse py-3 border-end" style="min-height: 80vh;">
-                <div class="position-sticky pt-3">
-                    
-                    <div class="text-center mb-4 pb-3 border-bottom">
-                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2" style="width: 60px; height: 60px; font-size: 24px;">
-                            <i class="fas fa-user"></i>
+    
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
+        <h1 class="h2">Xin chào, Quý khách!</h1>
+        <a href="/customer/create-order" class="btn btn-primary shadow-sm">
+            <i class="fas fa-plus me-1"></i> Tạo đơn vận chuyển mới
+        </a>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white shadow h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-white-50 text-uppercase">Đang vận chuyển</h6>
+                            <h2 class="fw-bold mb-0">0</h2>
                         </div>
-                        <h6 class="fw-bold mb-0">Nguyễn Văn Khách</h6>
-                        <small class="text-muted">Thành viên Vàng</small>
+                        <i class="fas fa-shipping-fast fa-3x opacity-50"></i>
                     </div>
-
-                    <h6 class="sidebar-heading px-3 mt-2 mb-1 text-muted text-uppercase">
-                        <span>Tài khoản</span>
-                    </h6>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active fw-bold text-primary" href="/customer/dashboard">
-                                <i class="fas fa-home me-2"></i> Tổng quan
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="#">
-                                <i class="fas fa-box-open me-2"></i> Đơn hàng của tôi
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="#">
-                                <i class="fas fa-user-cog me-2"></i> Hồ sơ cá nhân
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
-                    <h1 class="h2">Xin chào, Quý khách!</h1>
-                    <a href="/request" class="btn btn-primary shadow-sm">
-                        <i class="fas fa-plus me-1"></i> Tạo đơn vận chuyển mới
-                    </a>
-                </div>
-
-                <div class="row g-4 mb-5">
-                    <div class="col-md-4">
-                        <div class="card bg-primary text-white shadow h-100">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="text-white-50 text-uppercase">Đang vận chuyển</h6>
-                                        <h2 class="fw-bold mb-0">2</h2>
-                                    </div>
-                                    <i class="fas fa-shipping-fast fa-3x opacity-50"></i>
-                                </div>
-                                <div class="mt-3">
-                                    <small>Đơn #ORD-9981 sắp đến nơi</small>
-                                </div>
-                            </div>
-                            <div class="card-footer bg-transparent border-0 text-end">
-                                <a href="#" class="text-white text-decoration-none small">Xem chi tiết <i class="fas fa-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-
-                <div class="card shadow mb-4">
-                    <div class="card-header bg-white py-3 border-0">
-                        <h6 class="m-0 fw-bold text-primary"><i class="fas fa-map-marked-alt me-2"></i>Theo dõi vận đơn</h6>
-                    </div>
-                    <div class="card-body p-0">
-                         <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0">
-                                <thead class="bg-light">
-                                    <tr>
-                                        <th class="ps-4">Mã vận đơn</th>
-                                        <th>Hàng hóa</th>
-                                        <th>Lộ trình</th>
-                                        <th>Trạng thái hiện tại</th>
-                                        <th class="text-end pe-4">Chi tiết</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="ps-4 fw-bold text-primary">#ORD-9981</td>
-                                        <td>Tủ lạnh công nghiệp</td>
-                                        <td><small>Hà Nội <i class="fas fa-arrow-right mx-1"></i> Đà Nẵng</small></td>
-                                        <td><span class="fw-bold text-primary">Đang di chuyển</span></td>
-                                        <td class="text-end pe-4"><button class="btn btn-sm btn-outline-primary">Xem</button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="mt-3">
+                        <small>Không có đơn hàng đang giao</small>
                     </div>
                 </div>
-
-            </main>
+                <div class="card-footer bg-transparent border-0 text-end">
+                    <a href="#" class="text-white text-decoration-none small">Xem chi tiết <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
         </div>
     </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header bg-white py-3 border-0">
+            <h6 class="m-0 fw-bold text-primary"><i class="fas fa-map-marked-alt me-2"></i>Theo dõi vận đơn</h6>
+        </div>
+        <div class="card-body p-0">
+             <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4">Mã vận đơn</th>
+                            <th>Hàng hóa</th>
+                            <th>Lộ trình</th>
+                            <th>Trạng thái hiện tại</th>
+                            <th class="text-end pe-4">Chi tiết</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center text-muted">
+                            <td colspan="5" class="py-5">
+                                <i class="fas fa-box-open fa-3x mb-3 d-block opacity-50"></i>
+                                Quý khách chưa có vận đơn nào
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 </body>
